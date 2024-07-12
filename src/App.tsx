@@ -14,12 +14,21 @@ function App() {
   const [description, setDescription] = useState<string>("");
   const [editIndex, setEditIndex] = useState<number>();
 
+  /**
+   *  Change Title and Description
+   * @param event  - Event
+   * @param title  - boolean
+   */
   const changeTitle = (
     event: React.ChangeEvent<HTMLInputElement>,
     title: boolean
   ) => {
     title ? setTitle(event.target.value) : setDescription(event.target.value);
   };
+
+  /**
+   * Add Note
+   */
   const addNote = () => {
     setNotes([...notes, { title: title, description: description }]);
     setTitle("");
@@ -29,17 +38,31 @@ function App() {
       JSON.stringify([...notes, { title: title, description: description }])
     );
   };
+
+  /**
+   * Delete Note
+   * @param index - number
+   */
   const deleteNote = (index: number) => {
     const newNotes = notes.filter((_, i) => i !== index);
     setNotes(newNotes);
     localStorage.setItem("notizen", JSON.stringify(newNotes));
   };
+
+  /**
+   * select Note to Edit
+   * @param index - number
+   */
   const editNote = (index: number) => {
     const editNote = notes.find((_, i) => i === index);
     setTitle(editNote?.title || "");
     setDescription(editNote?.description || "");
     setEditIndex(index);
   };
+
+  /**
+   * save edited Note
+   */
   const editNoteSave = () => {
     const newNotes = notes.map((element, i) => {
       if (i === editIndex) {
